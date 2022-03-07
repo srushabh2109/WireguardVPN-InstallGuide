@@ -81,3 +81,14 @@ Back on the server, edit `sudo nano /etc/wireguard/wg0.conf`, and now replace th
 ```
 sudo systemctl enable wg-quick@wg0 --now
 ```
+
+# [Server] Finish configuration
+There are only a couple more steps to complete our VPN routing network. First, we need to enable ip forwarding on the VPS (Server). If you aren't sure if it's already enabled you can check like so:
+```
+cat /etc/sysctl.conf | grep ipv4.ip_forward
+```
+If there is not a `#` in front, it is already enabled. If not, you need to edit this file and remove the `#` in front of it and make sure it is equal to 1.
+
+Example: `#net.ipv4.ip_forward=1` -> `net.ipv4.ip_forward=1`
+
+Now you need to tell it to route the connection on boot.
