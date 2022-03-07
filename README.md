@@ -27,7 +27,7 @@ umask 077; wg genkey | tee privatekey | wg pubkey > publickey
 # [Server] Start creating the configuration file.
 You will still need to add the client's public key, so once you paste this you aren't done in here yet, but you can save for now.
 ```
-sudo nano wg0.conf
+sudo nano /etc/wireguard/wg0.conf
 ```
 Paste this, and replace the `PrivateKey` under `[Interface]` with the private key generated in the previous step. If you type `cat *`, it will be the first string. Else if you're not feeling speedy you can `cat privatekey`.
 ```
@@ -51,3 +51,33 @@ cd /etc/wireguard/
 umask 077; wg genkey | tee privatekey | wg pubkey > publickey
 ```
 
+# [Client] Now create, and fill the configuration file.
+```
+sudo nano /etc/wireguard/wg0.conf
+```
+Paste the below text into the file. By now you will have all this information you need to complete this file. First, replace the private key under `[Interface]` with the second privatekey we just generated. The interface section always refers to the machine you are editing the coniguration on. Next, you will need to copy the VPS' public key. You generated this earlier on the server. And finally, replace `server-ip` in the `Endpoint` value to the IP address of the VPS.
+```
+[Interface]
+Address = 10.0.0.2/24
+ListenPort = 42295
+PrivateKey = private-key-we-generated-in-previous-step
+
+[Peer]
+PublicKey = public-key-of-the-server
+AllowedIPs = 10.0.0.0/24
+Endpoint = server-ip:42295
+PersistentKeepalive = 15
+```
+Save and close.
+
+# [Client] Start & Enable WireGuard
+It will continue to try to connect, so don't worry about it being too early. Once we finish the config on the VPS it will be good to go.
+```
+sudo systemctl enable wg-quick@wg0 --now
+```
+
+# [Server] Fill out the client's public key, and enable settings
+Back on the server, edit `sudo nano /etc/wireguard/wg0.conf`, and now replace the `PublicKey` value's variable with the public key you generated on the client. Then enable WireGuard.
+```
+sudo systemctl enable wg-quick@wg0 --now
+```
