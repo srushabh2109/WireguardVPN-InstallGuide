@@ -94,7 +94,7 @@ Example: `#net.ipv4.ip_forward=1` -> `net.ipv4.ip_forward=1`
 Now you need to tell it to route the connection on boot.
 
 # [Server] Configuring the Router (It's simple, trust me)
-This does come with a installer for the router service. The router service is written to route a webserver. If you plan to forward a port other than 80 or 443 to the VPN, just copy the first line and append before the last, which changing both instances of the port you wish to forward. 
+This does come with a installer for the router service. The router service is written to route a webserver. If you plan to forward a port other than 80 or 443 to the VPN, just copy the first line and append before the last, while changing both instances of the port you wish to forward. 
 
 # DO NOT PORT FORWARD 22! IT WILL MAKE IT DIFFICULT TO SSH INTO THE VPN ROUTER WITHOUT BEING FORWARDED TO THE CLIENT. 
 IF YOU HAVE THIS APP FORWARD SSH, AND YOU TRY TO SSH INTO THE ROUTER, YOU WILL BE ACTUALLY CONNECTING TO THE CLIENT, AND FOR MAINTINENCE PURPOSES, YOU DO NOT WANT THAT. You can still access the client on port 22 through the VPN network, or if you are already connected to the router.
