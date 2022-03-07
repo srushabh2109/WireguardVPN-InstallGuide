@@ -41,4 +41,13 @@ PublicKey = public-key-of-the-client
 AllowedIPs = 10.0.0.2/24
 ```
 
+# [Client] Install wireguard on the client and generate keys
+
+Remember, the client is going to act as the server to the public internet, although technically in this setup, it is the client.
+```
+sudo apt install wireguard -y
+sudo -i
+cd /etc/wireguard/
+umask 077; wg genkey | tee privatekey | wg pubkey > publickey
+```
 
