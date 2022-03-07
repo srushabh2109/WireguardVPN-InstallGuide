@@ -92,3 +92,34 @@ If there is not a `#` in front, it is already enabled. If not, you need to edit 
 Example: `#net.ipv4.ip_forward=1` -> `net.ipv4.ip_forward=1`
 
 Now you need to tell it to route the connection on boot.
+
+# [Server] Configuring the Router (It's simple, trust me)
+This does come with a installer for the router service. The router service is written to route a webserver. If you plan to forward a port other than 80 or 443 to the VPN, just copy the first line and append before the last, which changing both instances of the port you wish to forward. 
+
+# DO NOT PORT FORWARD 22! IT WILL MAKE IT DIFFICULT TO SSH INTO THE VPN ROUTER WITHOUT BEING FORWARDED TO THE CLIENT. 
+IF YOU HAVE THIS APP FORWARD SSH, AND YOU TRY TO SSH INTO THE ROUTER, YOU WILL BE ACTUALLY CONNECTING TO THE CLIENT, AND FOR MAINTINENCE PURPOSES, YOU DO NOT WANT THAT. You can still access the client on port 22 through the VPN network, or if you are already connected to the router.
+
+# [Server] Download and use installer
+Now that the warnings are out of the way, let's get started. Make sure you're logged in on the VPS as root, and navigate to a scripts folder
+```
+sudo -i && cd
+mkdir scripts && cd scripts
+```
+
+Download the installer, and routing script. 
+```
+wget https://raw.githubusercontent.com/techjosie/WireguardVPN-InstallGuide/main/router_installer/install-router.sh
+wget https://raw.githubusercontent.com/techjosie/WireguardVPN-InstallGuide/main/router_installer/route.sh
+```
+If you need to forward anything other than a webserver, you will do this now. Edit `route.sh` and modify to your needs.
+
+Now install.
+```
+chmod +x /root/scripts/*.sh
+./install.sh
+```
+
+Check the status of the router to ensure it worked. It should not be running as it only needs to be ran once. This will run at each boot, and once completed it will stop itself. It should say loaded and succeeded with this command
+```
+sudo systemctl status network-router.service
+```
